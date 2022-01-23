@@ -21,4 +21,12 @@
 /frontend/yarn-error.log*
 
 .DS_Store
-api/__pycache__/BasicHandler.cpython-39.pyc
+api/__pycache__
+
+venv/
+*.pyc
+__pycache__/
+instance/
+.cache/
+.pytest_cache/
+*~
