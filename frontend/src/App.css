@@ -1,0 +1,73 @@
+:root
+{
+	--white: #fff;
+	--mineshaft: #333333;
+	--carnation: #fa5c58;
+	--gray: #808080;
+	--aquahaze: #f1f4f7;
+  --primary-color: #ffe6ee;
+  --triadic1: #e593b9;
+  --analogous: #e75480;
+	--montserrat: "MontserratRegular", sans-serif;
+	--lora: "LoraRegular", serif;
+}
+
+.main-container {
+  margin: 30px;
+}
+
+form {
+  background: var(--primary-color);
+  padding: 2rem 0.625rem 0 0.625rem;
+  border-radius: 0.25rem;
+}
+
+.input-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+input, button
+{
+	margin: 5px 0 10px 0;
+	padding: 8px;
+	/* border: none; */
+	/* box-shadow: var(--primary-color);
+	outline: var(--primary-color);
+  border: var(--triadic1); */
+  border-radius: 10px;
+}
+
+input {
+  width: 85%;
+}
+
+button {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px;
+  cursor: pointer;
+  color: #fff;
+  background-color: var(--analogous);
+  border: none;
+  font-size: larger;
+}
+
+button:hover {
+  background-color: var(--carnation);
+}
+
+label {
+  font-size: larger;
+}
+
+#input-form {
+  padding: 10px 40px 0px 40px;
+}
+
+.form-header{
+  margin: 0 0 5px 0;
+  padding: 0;
+}
