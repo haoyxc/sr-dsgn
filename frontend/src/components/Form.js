@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component, useState } from 'react';
 
 export default class Form extends Component {
@@ -16,12 +17,20 @@ export default class Form extends Component {
     }
     constructor(props) {
         super(props);
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    handleSubmit = (event) => {
+    async handleSubmit(event) {
         event.preventDefault()
         alert("submitted")
         console.log(this.state)
+        const response = await axios.post('http://localhost:5000/flask/submitForm', this.state, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log(response)
+        
     }
 
     handleChange = (evt) => {

@@ -3,18 +3,14 @@
 run virtual environment:
 do this once: `virtualenv -p python3 venv`
 
-```
-source venv/bin/activate
-```
-
-to deactivate: `deactivate`
-
-======================
 in the terminal: 
 ```
+source venv/bin/activate
 export FLASK_ENV=development
 flask run
 ```
+
+to deactivate: `deactivate`
 
 # Frontend
 ```
