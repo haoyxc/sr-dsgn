@@ -42,6 +42,13 @@ class FormHandler(Resource):
     req_downtime = args['downtime']
     req_butyl_demand = args['butylDemand']
     req_butyl_capacity = args['butylCapacity']
+    req_butyl_density = args['butylDensity']
+    req_butyl_prod = args['butylProd']
+    req_ethyl_demand = args['ethylDemand']
+    req_ethyl_capacity = args['ethyllCapacity']
+    req_ethyl_density = args['ethylDensity']
+    req_ethyl_prod = args['ethylProd']
+
     # ret_status, ret_msg = ReturnData(request_type, request_json)
     # currently just returning the req straight
     ret_status = request_type
