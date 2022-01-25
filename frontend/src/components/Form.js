@@ -8,11 +8,11 @@ export default class Form extends Component {
         downtime: 0,
         butylDemand: 0,
         butylCapacity: 0,
-        butylDensity: 0,
+        butylDensity: 1, // avoid divide by 0
         butylProd: 0,
         ethylDemand: 0, 
         ethylCapcity: 0,
-        ethylDensity: 0,
+        ethylDensity: 1, // avoid divide by 0
         ethylProd: 0
     }
     constructor(props) {
@@ -51,20 +51,20 @@ export default class Form extends Component {
                     <div className="form-group col-md-8 col-md-offset-2">
                         <label className='form-label'> Tank Initial Capacity (gallons)</label>
                         <br/>
-                        <input name="tankInitial" type="number" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
+                        <input name="tankInitial" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
                     </div>
                     {/* TANK CAPACITY */}
                     <div className="form-group col-md-8 col-md-offset-2">
                         <label className='form-label'> Tank Capacity (gallons)</label>
                         <br/>
-                        <input name="tankCapacity" type="number" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
+                        <input name="tankCapacity" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
                     </div>
 
                     {/* Downtime */}
                     <div>
                         <label className='form-label'> Downtime (Days)</label>
                         <br/>
-                        <input name="downtime" type="number" onChange={this.handleChange} classname="form-input" placeholder='e.g. 2'></input> 
+                        <input name="downtime" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 2'></input> 
                     </div>
                 </div>
                 {/* ============================================================= */}
@@ -76,25 +76,25 @@ export default class Form extends Component {
                     <div className="form-group col-md-8 col-md-offset-2">
                         <label className='form-label'> Expected Demand (pounds per month)</label>
                         <br/>
-                        <input name="butylDemand" type="number" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
+                        <input name="butylDemand" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
                     </div>
                     {/* BUTYL CAPACITY */}
                     <div>
                         <label className='form-label'>Production Capacity (pounds per month)</label>
                         <br/>
-                        <input name="butylCapacity" type="number" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="butylCapacity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
                     </div>
                     {/* BUTYL Density */}
                     <div>
                         <label className='form-label'>Density(pounds per gallon)</label>
                         <br/>
-                        <input name="butylDensity" type="number" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="butylDensity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
                     </div>
                     {/* BUTYL Production rate */}
                     <div>
                         <label className='form-label'>Production rate(pounds per day)</label>
                         <br/>
-                        <input name="butylProd" type="number" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="butylProd" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
                     </div>
                 </div>
 
@@ -107,25 +107,25 @@ export default class Form extends Component {
                     <div className="form-group col-md-8 col-md-offset-2">
                         <label className='form-label'> Expected Demand (pounds per month)</label>
                         <br/>
-                        <input name="ethylDemand" type="number" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
+                        <input name="ethylDemand" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
                     </div>
                     {/* ETHYL CAPACITY */}
                      <div>
                         <label className='form-label'> Production Capacity (pounds per month)</label>
                         <br/>
-                        <input name="ethylCapacity" type="number" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="ethylCapacity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
                     </div>
                     {/* ETHYL Density */}
                     <div>
                         <label className='form-label'> Density(pounds per gallon)</label>
                         <br/>
-                        <input name="ethylDensity" type="number" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="ethylDensity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
                     </div>
                     {/* ETHYL Production rate */}
                     <div>
                         <label className='form-label'>Production rate(pounds per day)</label>
                         <br/>
-                        <input name="ethylProd" type="number" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="ethylProd" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
                     </div>
                 </div>
                 

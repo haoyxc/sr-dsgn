@@ -1,5 +1,6 @@
 from flask_restful import Api, Resource, reqparse
 from flask import jsonify
+from api.helpers.FormParams import FormParams
 
 class FormHandler(Resource):
   def get(self):
@@ -49,10 +50,12 @@ class FormHandler(Resource):
     req_ethyl_density = args['ethylDensity']
     req_ethyl_prod = args['ethylProd']
 
-    print(req_tank_initial, req_tank_capacity, req_downtime, req_butyl_demand, req_butyl_capacity, req_butyl_density, req_butyl_prod, req_ethyl_demand, req_ethyl_capacity, req_ethyl_density, req_ethyl_prod)
+    # print(req_tank_initial, req_tank_capacity, req_downtime, req_butyl_demand, req_butyl_capacity, req_butyl_density, req_butyl_prod, req_ethyl_demand, req_ethyl_capacity, req_ethyl_density, req_ethyl_prod)
 
+    fp = FormParams(req_tank_initial, req_tank_capacity, req_downtime, req_butyl_demand, req_butyl_capacity, req_butyl_density, req_butyl_prod, req_ethyl_demand, req_ethyl_capacity, req_ethyl_density, req_ethyl_prod)
     # ret_status, ret_msg = ReturnData(request_type, request_json)
     # currently just returning the req straight
+    print(fp.getScheduler())
     ret_status = request_type
     ret_msg = request_json
 
