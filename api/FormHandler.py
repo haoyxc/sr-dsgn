@@ -24,7 +24,7 @@ class FormHandler(Resource):
     parser.add_argument('butylDensity')
     parser.add_argument('butylProd')
     parser.add_argument('ethylDemand')
-    parser.add_argument('ethylCapcity')
+    parser.add_argument('ethylCapacity')
     parser.add_argument('ethylDensity')
     parser.add_argument('ethylProd')
 
@@ -45,9 +45,11 @@ class FormHandler(Resource):
     req_butyl_density = args['butylDensity']
     req_butyl_prod = args['butylProd']
     req_ethyl_demand = args['ethylDemand']
-    req_ethyl_capacity = args['ethyllCapacity']
+    req_ethyl_capacity = args['ethylCapacity']
     req_ethyl_density = args['ethylDensity']
     req_ethyl_prod = args['ethylProd']
+
+    print(req_tank_initial, req_tank_capacity, req_downtime, req_butyl_demand, req_butyl_capacity, req_butyl_density, req_butyl_prod, req_ethyl_demand, req_ethyl_capacity, req_ethyl_density, req_ethyl_prod)
 
     # ret_status, ret_msg = ReturnData(request_type, request_json)
     # currently just returning the req straight
