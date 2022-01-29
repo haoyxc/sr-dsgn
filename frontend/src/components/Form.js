@@ -5,7 +5,7 @@ export default class Form extends Component {
     state = {
         tankInitial: 0,
         tankCapacity: 0,
-        downtime: 0,
+        turnover: 0,
         butylDemand: 0,
         butylCapacity: 0,
         butylDensity: 1, // avoid divide by 0
@@ -60,11 +60,11 @@ export default class Form extends Component {
                         <input name="tankCapacity" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
                     </div>
 
-                    {/* Downtime */}
+                    {/* Turnover */}
                     <div>
-                        <label className='form-label'> Downtime (Days)</label>
+                        <label className='form-label'> Turnover (Days)</label>
                         <br/>
-                        <input name="downtime" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 2'></input> 
+                        <input name="turnover" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 2'></input> 
                     </div>
                 </div>
                 {/* ============================================================= */}

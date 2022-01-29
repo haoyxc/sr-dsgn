@@ -19,7 +19,7 @@ class FormHandler(Resource):
     # Add arguments
     parser.add_argument('tankInitial')
     parser.add_argument('tankCapacity')
-    parser.add_argument('downtime')
+    parser.add_argument('turnover')
     parser.add_argument('butylDemand')
     parser.add_argument('butylCapacity')
     parser.add_argument('butylDensity')
@@ -40,7 +40,7 @@ class FormHandler(Resource):
     # Get the arguments 
     req_tank_initial = args['tankInitial']
     req_tank_capacity = args['tankCapacity']
-    req_downtime = args['downtime']
+    req_turnover = args['turnover']
     req_butyl_demand = args['butylDemand']
     req_butyl_capacity = args['butylCapacity']
     req_butyl_density = args['butylDensity']
@@ -52,7 +52,7 @@ class FormHandler(Resource):
 
     # print(req_tank_initial, req_tank_capacity, req_downtime, req_butyl_demand, req_butyl_capacity, req_butyl_density, req_butyl_prod, req_ethyl_demand, req_ethyl_capacity, req_ethyl_density, req_ethyl_prod)
 
-    fp = FormParams(req_tank_initial, req_tank_capacity, req_downtime, req_butyl_demand, req_butyl_capacity, req_butyl_density, req_butyl_prod, req_ethyl_demand, req_ethyl_capacity, req_ethyl_density, req_ethyl_prod)
+    fp = FormParams(req_tank_initial, req_tank_capacity, req_turnover, req_butyl_demand, req_butyl_capacity, req_butyl_density, req_butyl_prod, req_ethyl_demand, req_ethyl_capacity, req_ethyl_density, req_ethyl_prod)
     # ret_status, ret_msg = ReturnData(request_type, request_json)
     # currently just returning the req straight
     print(fp.getScheduler())
