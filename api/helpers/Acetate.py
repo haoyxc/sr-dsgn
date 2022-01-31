@@ -1,7 +1,7 @@
 from enum import Enum
 
 class Acetate(Enum):
-    Turnover: -1
-    Down: 0
-    Butyl: 1
-    Ethyl: 2
+    TURNOVER: -1
+    DOWNTIME: 0
+    BUTYL: 1
+    ETHYL: 2
