@@ -39,9 +39,39 @@ class FormParams:
     def scheduleMonth(self):
         return 0
 
-    def solveMonth(self, n):
+    def handlePrevTurnoverTime(self):
+        # needs more downtime -> give it more downtime.
+        if self.tank.needDowntime():
+            return Acetate.DOWNTIME
+
+                
+
+    def handlePrevDowntime(self):
         '''
-        n: number of days in the month
+        If previously we had downtime, we want to see if we still need downtime or can produce something. 
+        If the tank is at capacity OR both of the acetates are at capacity, then we would need downtime.
+        '''
+        # needs more downtime -> give it more downtime.
+        if self.tank.needDowntime():
+            return Acetate.DOWNTIME
+        
+        # Can only produce ethyl
+        if not self.tank.canProduceButyl():
+            self.tank.increaseEthylProd()
+            return Acetate.ETHYL
+        
+        # can only produce butyl
+        if not self.tank.canProduceEthyl():
+            self.tank.increaseButylProd()
+            return Acetate.BUTYL
+        
+        # otherwise, we can produce both. we produce whichever one has a greater production per day.
+        return Acetate.BUTYL if self.tank.BUTYL_PROD_GAL_PER_DAY > self.tank.ETHYL_PROD_GAL_PER_DAY else Acetate.ETHYL
+        
+
+    def solveMonth(self, prev: Acetate):
+        '''
+        prev: the previous acetate that was produced
         butyl_month_total: how much butyl was already produced that month
         ethyl_mont_total: how much ethyl was already produced that month
         '''
@@ -50,7 +80,7 @@ class FormParams:
             return Acetate.DOWNTIME
         
         # base case: can't produce either (both are at capacity)
-        if not self.tank.canProduceEthyl():
+        if not self.tank.canProduceEither():
             return Acetate.DOWNTIME
         
         # only 1 option: Turnover is NOT complete
@@ -68,12 +98,13 @@ class FormParams:
         if not self.tank.canProduceEthyl():
             self.tank.increaseButylProd()
             return Acetate.BUTYL
-        if n == 1:
-            return n
+ 
         tank_remaining = self.tank_capacity - self.tank_initial # in gallons
         # to produce butyl: need to check that month capacity is < butyl capacity, butyl_prod per day < tank_remaining
         return 1
     
+    def handleMonth(self, n):
+        return 0
 
     def handleDay(self, prev: Acetate, curr: Acetate, sched: Schedule):
         return 0
