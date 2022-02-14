@@ -1,4 +1,7 @@
 from typing import Final
+from xmlrpc.client import boolean
+
+from api.helpers.Acetate import Acetate
 class Tank:
     def __init__(self, curr_tank_capacity, monthly_butyl_prod, monthly_ethyl_prod, tank_capacity, butyl_capacity, ethyl_capacity, butyl_prod_gal, ethyl_prod_gal, turnover) -> None:
         self.curr_tank_capacity = curr_tank_capacity
@@ -15,6 +18,7 @@ class Tank:
         # if this is -1, we are NOT in a turnover period. turnover will start at 1. 
         self.turnover_streak = -1
         self.required_turnover = turnover
+        self.last_acetate : Acetate = 0
     
     def getTurnoverStreak(self):
         return self.turnover_streak
@@ -40,8 +44,9 @@ class Tank:
 
     
     # --------------
+    # Turnover related helper functions
     #----------------
-    def needsMoreTurnover(self):
+    def needsMoreTurnover(self) -> boolean:
         return self.turnover_streak > -1 and self.turnover_streak < self.required_turnover
 
     def incrementTurnover(self):
@@ -52,9 +57,12 @@ class Tank:
     
     def startTurnover(self):
         self.turnover_streak = 1
-
-    def increaseEthylProd(self):
-        self.monthly_ethyl_prod = self.monthly_ethyl_prod + self.ETHYL_PROD_GAL_PER_DAY
     
-    def increaseButylProd(self):
-        self.monthly_butyl_prod = self.monthly_butyl_prod + self.BUTYL_PROD_GAL_PER_DAY
+    def isInTurnover(self) -> boolean:
+        return self.turnover_streak != -1
+
+    # def increaseEthylProd(self):
+    #     self.monthly_ethyl_prod = self.monthly_ethyl_prod + self.ETHYL_PROD_GAL_PER_DAY
+    
+    # def increaseButylProd(self):
+    #     self.monthly_butyl_prod = self.monthly_butyl_prod + self.BUTYL_PROD_GAL_PER_DAY
