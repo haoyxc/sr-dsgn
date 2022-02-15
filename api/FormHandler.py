@@ -55,7 +55,7 @@ class FormHandler(Resource):
     fp = FormParams(req_tank_initial, req_tank_capacity, req_turnover, req_butyl_demand, req_butyl_capacity, req_butyl_density, req_butyl_prod, req_ethyl_demand, req_ethyl_capacity, req_ethyl_density, req_ethyl_prod)
     # ret_status, ret_msg = ReturnData(request_type, request_json)
     # currently just returning the req straight
-    print(fp.getScheduler())
+    print(fp.randomlyAssignSchedule(2))
     ret_status = request_type
     ret_msg = request_json
 

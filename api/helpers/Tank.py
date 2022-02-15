@@ -4,6 +4,7 @@ from xmlrpc.client import boolean
 from api.helpers.Acetate import Acetate
 class Tank:
     def __init__(self, curr_tank_capacity, monthly_butyl_prod, monthly_ethyl_prod, tank_capacity, butyl_capacity, ethyl_capacity, butyl_prod_gal, ethyl_prod_gal, turnover) -> None:
+        # current gallons in the tank
         self.curr_tank_capacity = curr_tank_capacity
         self.monthly_butyl_prod = monthly_butyl_prod
         self.monthly_ethyl_prod = monthly_ethyl_prod
@@ -42,6 +43,22 @@ class Tank:
         '''
         return self.isTankFull() or not self.canProduceEither()
 
+    # Production functions
+    def produceButyl(self):
+        self.monthly_butyl_prod = self.monthly_butyl_prod + self.BUTYL_PROD_GAL_PER_DAY
+        self.curr_tank_capacity = self.curr_tank_capacity + self.monthly_butyl_prod
+    def produceEutyl(self):
+        self.monthly_ethyl_prod = self.monthly_ethyl_prod + self.ETHYL_PROD_GAL_PER_DAY
+        self.curr_tank_capacity = self.curr_tank_capacity + self.monthly_ethyl_prod
+    def reset(self):
+        self.monthly_butyl_prod = 0
+        self.monthly_ethyl_prod = 0
+        self.curr_tank_capacity = 0
+
+    def decreaseByMonthlyDemand(self, butylDemand, ethylDemand):
+        self.monthly_butyl_prod = self.monthly_butyl_prod - butylDemand
+        self.monthly_ethyl_prod = self.monthly_ethyl_prod - ethylDemand
+        self.curr_tank_capacity = self.monthly_butyl_prod + self.monthly_ethyl_prod
     
     # --------------
     # Turnover related helper functions

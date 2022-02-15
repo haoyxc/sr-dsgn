@@ -5,8 +5,9 @@ class Schedule:
     def __init__(self) -> None:
         self.schedule = []
 
+        # total production over ALL of the months. This value is never decreased to 0
         self.total_production = 0
-        self.last_acetate = None
+        self.last_acetate = Acetate.DOWNTIME
     
     def addToSchedule(self, toAdd : Acetate, production):
         self.schedule.append(toAdd)
@@ -17,4 +18,11 @@ class Schedule:
         
     def getSchedule(self) -> List:
         return self.schedule
+
+    def getLastScheduledAcetate(self) -> Acetate:
+        return self.last_acetate
+
+    def getLastThingInSchedule(self) -> Acetate:
+        return Acetate.DOWNTIME if len(self.schedule) == 0 else self.schedule[-1]
+
     
