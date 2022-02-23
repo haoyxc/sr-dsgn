@@ -73,8 +73,8 @@ class Tank:
 
     def decreaseByMonthlyDemand(self, butylDemand, ethylDemand):
 
-        self.monthly_butyl_prod = self.monthly_butyl_prod - butylDemand
-        self.monthly_ethyl_prod = self.monthly_ethyl_prod - ethylDemand
+        self.monthly_butyl_prod = max(self.monthly_butyl_prod - butylDemand, 0)
+        self.monthly_ethyl_prod = max(self.monthly_ethyl_prod - ethylDemand, 0)
         self.curr_tank_capacity = self.monthly_butyl_prod + self.monthly_ethyl_prod
     
     # --------------

@@ -45,7 +45,9 @@ class FormParams:
 
     # DECIDE WHETHER TO PRODUCE BUTYL OR ETHYL AFTER DOWNTIME.
     def decideBetweenButylAndEthyl(self, currSchedule: Schedule):
-        return self.addButyl(currSchedule) if self.tank.BUTYL_PROD_GAL_PER_DAY > self.tank.ETHYL_PROD_GAL_PER_DAY else self.addEthyl(currSchedule)
+        randInt = random.randint(0, 1)
+        return self.addButyl(currSchedule) if randInt == 0 else self.addEthyl(currSchedule)
+        # return self.addButyl(currSchedule) if self.tank.BUTYL_PROD_GAL_PER_DAY > self.tank.ETHYL_PROD_GAL_PER_DAY else self.addEthyl(currSchedule)
 
     
     def handlePrevTurnoverTime(self, currSched: Schedule):
@@ -90,7 +92,6 @@ class FormParams:
         '''
         prev: the previous acetate that was produced
         '''
-        
         if prev == Acetate.ETHYL:
             if self.tank.canProduceEthyl():
                 self.addEthyl(currSched)
@@ -101,16 +102,6 @@ class FormParams:
                 self.addButyl(currSched)
             else:
                 currSched.addToSchedule(Acetate.DOWNTIME, 0)
-
-        
-        # can only produce butyl
-        if self.tank.canProduceButyl() and prev == Acetate.BUTYL:
-            self.tank.increaseButylProd()
-            return Acetate.BUTYL
- 
-        tank_remaining = self.tank_capacity - self.tank_initial # in gallons
-        # to produce butyl: need to check that month capacity is < butyl capacity, butyl_prod per day < tank_remaining
-        return 1
     
 
     def handleDay(self, prev: Acetate, sched: Schedule):
@@ -129,7 +120,7 @@ class FormParams:
         sched: the schedule object so far
         '''
         for i in range(num_days):
-            self.handleDay(prev, sched=sched)
+            self.handleDay(sched.getLastThingInSchedule(), sched=sched)
     
     def randomlyAssignSchedule(self, n) -> Schedule:
         '''

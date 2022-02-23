@@ -69,4 +69,5 @@ class FormHandler(Resource):
     else:
       message = "No Msg"
     
-    final_ret = {"status": "Success", "message": message}
+    final_ret = {"status": "Success", "message": message, "schedule": schedObj.getSchedule()}
+    return final_ret

@@ -11,7 +11,7 @@ export default class Form extends Component {
         butylDensity: 1, // avoid divide by 0
         butylProd: 0,
         ethylDemand: 0, 
-        ethylCapcity: 0,
+        ethylCapacity: 0,
         ethylDensity: 1, // avoid divide by 0
         ethylProd: 0
     }
@@ -30,6 +30,8 @@ export default class Form extends Component {
             }
         });
         console.log(response)
+        let schedule = response.data.schedule
+        console.log(schedule)
         
     }
 
