@@ -10,6 +10,7 @@ class Schedule:
         self.last_acetate = Acetate.DOWNTIME
     
     def addToSchedule(self, toAdd : Acetate, production):
+        print("PRODUCTION: ", production)
         self.schedule.append(toAdd)
         self.total_production = self.total_production + production
         # Track the last acetate that is not downtime or turnover
@@ -24,5 +25,7 @@ class Schedule:
 
     def getLastThingInSchedule(self) -> Acetate:
         return Acetate.DOWNTIME if len(self.schedule) == 0 else self.schedule[-1]
+    def getTotalProduction(self) -> float:
+        return self.total_production
 
     

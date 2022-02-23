@@ -30,7 +30,7 @@ class FormParams:
         self.GALS_PER_DAY_LIST = [0, butyl_prod_gal, ethyl_prod_gal]
 
         # tank parameters
-        print("initial: ", req_tank_initial)
+        # print("initial: ", req_tank_initial)
         self.tank = Tank(req_tank_initial, 0, 0, float(req_tank_capacity), req_butyl_capacity / req_butyl_density, req_ethyl_capacity / req_ethyl_density, butyl_prod_gal, ethyl_prod_gal, req_turnover)
         # Stores the schedule 
         self.schedule = Schedule()
@@ -42,6 +42,10 @@ class FormParams:
     def addButyl(self, currSched: Schedule):
         self.tank.produceButyl()
         currSched.addToSchedule(Acetate.BUTYL, self.GALS_PER_DAY_LIST[int(Acetate.BUTYL)])
+
+    def addTurnover(self, currSched: Schedule):
+        self.tank.incrementTurnover() if self.tank.isInTurnover() else self.tank.startTurnover()
+        currSched.addToSchedule(Acetate.TURNOVER, self.GALS_PER_DAY_LIST[0])
 
     # DECIDE WHETHER TO PRODUCE BUTYL OR ETHYL AFTER DOWNTIME.
     def decideBetweenButylAndEthyl(self, currSchedule: Schedule):
@@ -57,13 +61,14 @@ class FormParams:
         # needs more turnover -> give it more turnover.
         if self.tank.needsMoreTurnover():
             # increment turnover and add turnover to the schedule
-            self.tank.incrementTurnover()
-            currSched.addToSchedule(Acetate.TURNOVER, self.GALS_PER_DAY_LIST[0])
+            # self.tank.incrementTurnover()
+            # currSched.addToSchedule(Acetate.TURNOVER, self.GALS_PER_DAY_LIST[0])
+            self.addTurnover(currSched)
             return
         # otherwise, turnover just finished. -> end the turnover.
         # Figure out which should be produced
         self.tank.endTurnover()
-        self.addEthyl(currSched) if currSched.getLastScheduledAcetate == Acetate.BUTYL else self.addButyl(currSched)
+        self.addEthyl(currSched) if currSched.getLastScheduledAcetate() == Acetate.BUTYL else self.addButyl(currSched)
                 
 
     def handlePrevDowntime(self, currSched):
@@ -86,7 +91,7 @@ class FormParams:
         # otherwise, we can produce both. pick which one to produce.
         self.decideBetweenButylAndEthyl(currSchedule=currSched)
         
-
+    
 
     def handlePrevAcetate(self, prev: Acetate, currSched: Schedule):
         '''
@@ -95,21 +100,28 @@ class FormParams:
         if prev == Acetate.ETHYL:
             if self.tank.canProduceEthyl():
                 self.addEthyl(currSched)
+            elif self.tank.canProduceButyl():
+                self.addTurnover(currSched)
             else:
                 currSched.addToSchedule(Acetate.DOWNTIME, 0)
         if prev == Acetate.BUTYL:
             if self.tank.canProduceButyl():
                 self.addButyl(currSched)
+            elif self.tank.canProduceEthyl():
+                self.addTurnover(currSched)
             else:
                 currSched.addToSchedule(Acetate.DOWNTIME, 0)
     
 
     def handleDay(self, prev: Acetate, sched: Schedule):
         if (prev == Acetate.TURNOVER):
+            # print("handle turnover")
             self.handlePrevTurnoverTime(sched)
         elif (prev == Acetate.DOWNTIME):
+            # print("handle downtime")
             self.handlePrevDowntime(sched)
         else:
+            # print("handle prev acetate")
             self.handlePrevAcetate(prev, sched)
     
     # NAIVE METHOD: randomly guess and find the best one lol.

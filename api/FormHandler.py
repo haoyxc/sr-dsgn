@@ -57,8 +57,9 @@ class FormHandler(Resource):
     # ret_status, ret_msg = ReturnData(request_type, request_json)
     # currently just returning the req straight
 
-    schedObj : Schedule = fp.randomlyAssignSchedule(5)
+    schedObj : Schedule = fp.randomlyAssignSchedule(2)
     print(schedObj.getSchedule())
+    print("total production: ", schedObj.getTotalProduction())
     
     ret_status = request_type
     ret_msg = request_json

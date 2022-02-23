@@ -20,7 +20,8 @@ class Tank:
         # if this is -1, we are NOT in a turnover period. turnover will start at 1. 
         self.turnover_streak = -1
         self.required_turnover = turnover
-        self.last_acetate : Acetate = 0
+        # This is stored in the schedule
+        # self.last_acetate : Acetate = 0
     
     def getTurnoverStreak(self):
         return self.turnover_streak
@@ -29,9 +30,9 @@ class Tank:
         return self.monthly_butyl_prod + self.monthly_ethyl_prod
 
     def isTankFull(self):
-        print("curr capacity: ", self.curr_tank_capacity)
-        print("Tank capacity: ", self.TANK_CAPACITY)
-        print("is tank full: ", self.curr_tank_capacity < self.TANK_CAPACITY)
+        # print("curr capacity: ", self.curr_tank_capacity)
+        # print("Tank capacity: ", self.TANK_CAPACITY)
+        # print("is tank full: ", self.curr_tank_capacity < self.TANK_CAPACITY)
         return self.curr_tank_capacity >= self.TANK_CAPACITY
         # return 0
 
@@ -42,8 +43,6 @@ class Tank:
         return not self.isTankFull() and self.monthly_ethyl_prod + self.ETHYL_PROD_GAL_PER_DAY <= self.ETHYL_CAPACITY
 
     def canProduceEither(self):
-        print("can produce butyl: ", self.canProduceButyl())
-        print("can produce ethyl: ", self.canProduceEthyl())
         return self.canProduceButyl() or self.canProduceEthyl()
 
     def needDowntime(self):
@@ -72,7 +71,6 @@ class Tank:
         self.curr_tank_capacity = 0
 
     def decreaseByMonthlyDemand(self, butylDemand, ethylDemand):
-
         self.monthly_butyl_prod = max(self.monthly_butyl_prod - butylDemand, 0)
         self.monthly_ethyl_prod = max(self.monthly_ethyl_prod - ethylDemand, 0)
         self.curr_tank_capacity = self.monthly_butyl_prod + self.monthly_ethyl_prod
