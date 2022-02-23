@@ -4,10 +4,11 @@ from xmlrpc.client import boolean
 from api.helpers.Acetate import Acetate
 class Tank:
     def __init__(self, curr_tank_capacity, monthly_butyl_prod, monthly_ethyl_prod, tank_capacity, butyl_capacity, ethyl_capacity, butyl_prod_gal, ethyl_prod_gal, turnover) -> None:
-        # current gallons in the tank
+        # current gallons in the tank -- curr_tank_capacity is the sum of the other two
         self.curr_tank_capacity = curr_tank_capacity
         self.monthly_butyl_prod = monthly_butyl_prod
         self.monthly_ethyl_prod = monthly_ethyl_prod
+        
         # DOES NOT CHANGE
         self.TANK_CAPACITY: Final = tank_capacity
         self.BUTYL_CAPACITY: Final = butyl_capacity
@@ -24,17 +25,25 @@ class Tank:
     def getTurnoverStreak(self):
         return self.turnover_streak
 
+    def getTotalTankAmont(self):
+        return self.monthly_butyl_prod + self.monthly_ethyl_prod
+
     def isTankFull(self):
-        return self.curr_tank_capacity < self.TANK_CAPACITY
+        print("curr capacity: ", self.curr_tank_capacity)
+        print("Tank capacity: ", self.TANK_CAPACITY)
+        print("is tank full: ", self.curr_tank_capacity < self.TANK_CAPACITY)
+        return self.curr_tank_capacity >= self.TANK_CAPACITY
         # return 0
 
     def canProduceButyl(self):
-        return self.isTankFull(self) and self.monthly_butyl_prod + self.BUTYL_PROD_GAL_PER_DAY <= self.BUTYL_CAPACITY
+        return not self.isTankFull() and self.monthly_butyl_prod + self.BUTYL_PROD_GAL_PER_DAY <= self.BUTYL_CAPACITY
 
     def canProduceEthyl(self):
-        return self.isTankFull(self) and self.monthly_ethyl_prod + self.ETHYL_PROD_GAL_PER_DAY <= self.ETHYL_CAPACITY
+        return not self.isTankFull() and self.monthly_ethyl_prod + self.ETHYL_PROD_GAL_PER_DAY <= self.ETHYL_CAPACITY
 
     def canProduceEither(self):
+        print("can produce butyl: ", self.canProduceButyl())
+        print("can produce ethyl: ", self.canProduceEthyl())
         return self.canProduceButyl() or self.canProduceEthyl()
 
     def needDowntime(self):
@@ -45,17 +54,25 @@ class Tank:
 
     # Production functions
     def produceButyl(self):
+        '''
+        add the daily butyl production to monthly butyl total and tank capacity
+        '''
         self.monthly_butyl_prod = self.monthly_butyl_prod + self.BUTYL_PROD_GAL_PER_DAY
         self.curr_tank_capacity = self.curr_tank_capacity + self.monthly_butyl_prod
     def produceEutyl(self):
+        '''
+        add the daily ethyl production to the month ethyl total and tank capacity
+        '''
         self.monthly_ethyl_prod = self.monthly_ethyl_prod + self.ETHYL_PROD_GAL_PER_DAY
         self.curr_tank_capacity = self.curr_tank_capacity + self.monthly_ethyl_prod
+    
     def reset(self):
         self.monthly_butyl_prod = 0
         self.monthly_ethyl_prod = 0
         self.curr_tank_capacity = 0
 
     def decreaseByMonthlyDemand(self, butylDemand, ethylDemand):
+
         self.monthly_butyl_prod = self.monthly_butyl_prod - butylDemand
         self.monthly_ethyl_prod = self.monthly_ethyl_prod - ethylDemand
         self.curr_tank_capacity = self.monthly_butyl_prod + self.monthly_ethyl_prod

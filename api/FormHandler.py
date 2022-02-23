@@ -1,6 +1,7 @@
 from flask_restful import Api, Resource, reqparse
 from flask import jsonify
 from api.helpers.FormParams import FormParams
+from api.helpers.Schedule import Schedule
 
 class FormHandler(Resource):
   def get(self):
@@ -52,10 +53,13 @@ class FormHandler(Resource):
 
     # print(req_tank_initial, req_tank_capacity, req_downtime, req_butyl_demand, req_butyl_capacity, req_butyl_density, req_butyl_prod, req_ethyl_demand, req_ethyl_capacity, req_ethyl_density, req_ethyl_prod)
 
-    fp = FormParams(req_tank_initial, req_tank_capacity, req_turnover, req_butyl_demand, req_butyl_capacity, req_butyl_density, req_butyl_prod, req_ethyl_demand, req_ethyl_capacity, req_ethyl_density, req_ethyl_prod)
+    fp = FormParams(float(req_tank_initial), float(req_tank_capacity), float(req_turnover), float(req_butyl_demand), float(req_butyl_capacity), float(req_butyl_density), float(req_butyl_prod), float(req_ethyl_demand), float(req_ethyl_capacity), float(req_ethyl_density), float(req_ethyl_prod))
     # ret_status, ret_msg = ReturnData(request_type, request_json)
     # currently just returning the req straight
-    print(fp.randomlyAssignSchedule(2))
+
+    schedObj : Schedule = fp.randomlyAssignSchedule(5)
+    print(schedObj.getSchedule())
+    
     ret_status = request_type
     ret_msg = request_json
 

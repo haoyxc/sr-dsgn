@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntEnum
 
-class Acetate(Enum):
-    TURNOVER: -1
-    DOWNTIME: 0
-    BUTYL: 1
-    ETHYL: 2
+class Acetate(IntEnum):
+    TURNOVER = -1
+    DOWNTIME = 0
+    BUTYL = 1
+    ETHYL = 2

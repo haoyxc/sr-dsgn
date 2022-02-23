@@ -21,7 +21,7 @@ class FormParams:
         self.ethyl_prod = float(req_ethyl_prod)
         
         # demand & capacity in gallons, per month
-        self.butyl_demand_gallons = req_butyl_demand / req_butyl_density
+        self.butyl_demand_gallons = float(req_butyl_demand) / req_butyl_density
         self.ethyl_demand_gallons = req_ethyl_demand / req_ethyl_density
         
         # production PER DAY in gallons
@@ -30,21 +30,22 @@ class FormParams:
         self.GALS_PER_DAY_LIST = [0, butyl_prod_gal, ethyl_prod_gal]
 
         # tank parameters
-        self.tank = Tank(float(req_tank_initial), 0, 0, float(req_tank_capacity), req_butyl_capacity / req_butyl_density, req_ethyl_capacity / req_ethyl_density, butyl_prod_gal, ethyl_prod_gal, req_turnover)
+        print("initial: ", req_tank_initial)
+        self.tank = Tank(req_tank_initial, 0, 0, float(req_tank_capacity), req_butyl_capacity / req_butyl_density, req_ethyl_capacity / req_ethyl_density, butyl_prod_gal, ethyl_prod_gal, req_turnover)
         # Stores the schedule 
         self.schedule = Schedule()
 
     def addEthyl(self, currSched: Schedule):
         self.tank.produceEutyl()
-        currSched.addToSchedule(Acetate.ETHYL, self.GALS_PER_DAY_LIST[Acetate.ETHYL])
+        currSched.addToSchedule(Acetate.ETHYL, self.GALS_PER_DAY_LIST[int(Acetate.ETHYL)])
     
     def addButyl(self, currSched: Schedule):
-        self.tank.produceButyl
-        currSched.addToSchedule(Acetate.BUTYL, self.GALS_PER_DAY_LIST[Acetate.BUTYL])
+        self.tank.produceButyl()
+        currSched.addToSchedule(Acetate.BUTYL, self.GALS_PER_DAY_LIST[int(Acetate.BUTYL)])
 
     # DECIDE WHETHER TO PRODUCE BUTYL OR ETHYL AFTER DOWNTIME.
     def decideBetweenButylAndEthyl(self, currSchedule: Schedule):
-        return Acetate.BUTYL if self.tank.BUTYL_PROD_GAL_PER_DAY > self.tank.ETHYL_PROD_GAL_PER_DAY else Acetate.ETHYL
+        return self.addButyl(currSchedule) if self.tank.BUTYL_PROD_GAL_PER_DAY > self.tank.ETHYL_PROD_GAL_PER_DAY else self.addEthyl(currSchedule)
 
     
     def handlePrevTurnoverTime(self, currSched: Schedule):
@@ -74,45 +75,36 @@ class FormParams:
         
         # Can only produce ethyl
         elif not self.tank.canProduceButyl():
-            self.addEthyl()
+            self.addEthyl(currSched)
         
         # can only produce butyl
         elif not self.tank.canProduceEthyl():
-            self.addButyl()
-            return
+            self.addButyl(currSched)
         
         # otherwise, we can produce both. pick which one to produce.
-        self.decideBetweenButylAndEthyl(self, currSchedule=currSched)
+        self.decideBetweenButylAndEthyl(currSchedule=currSched)
         
 
 
-    def handlePrevAcetate(self, prev: Acetate):
+    def handlePrevAcetate(self, prev: Acetate, currSched: Schedule):
         '''
         prev: the previous acetate that was produced
-        butyl_month_total: how much butyl was already produced that month
-        ethyl_mont_total: how much ethyl was already produced that month
         '''
-        # base case: tank is full
-        if self.tank.isTankFull:
-            return Acetate.DOWNTIME
         
-        # base case: can't produce either (both are at capacity)
-        if not self.tank.canProduceEither():
-            return Acetate.DOWNTIME
-        
-        # only 1 option: Turnover is NOT complete
-        if self.tank.needsMoreTurnover():
-            # Incrememnt turnover streak
-            self.tank.incrementTurnover()
-            return Acetate.TURNOVER
-        
-        # Can only produce butyl
-        if not self.tank.canProduceButyl():
-            self.tank.increaseEthylProd()
-            return Acetate.ETHYL
+        if prev == Acetate.ETHYL:
+            if self.tank.canProduceEthyl():
+                self.addEthyl(currSched)
+            else:
+                currSched.addToSchedule(Acetate.DOWNTIME, 0)
+        if prev == Acetate.BUTYL:
+            if self.tank.canProduceButyl():
+                self.addButyl(currSched)
+            else:
+                currSched.addToSchedule(Acetate.DOWNTIME, 0)
+
         
         # can only produce butyl
-        if not self.tank.canProduceEthyl():
+        if self.tank.canProduceButyl() and prev == Acetate.BUTYL:
             self.tank.increaseButylProd()
             return Acetate.BUTYL
  
@@ -127,7 +119,7 @@ class FormParams:
         elif (prev == Acetate.DOWNTIME):
             self.handlePrevDowntime(sched)
         else:
-            self.handlePrevAcetate(sched)
+            self.handlePrevAcetate(prev, sched)
     
     # NAIVE METHOD: randomly guess and find the best one lol.
     def randomlyAssignMonth(self, num_days, prev: Acetate, sched: Schedule):
