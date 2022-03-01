@@ -20,6 +20,38 @@ export default class Form extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
+    getAcetateFromInt(acetateInt) {
+        if (acetateInt === -1) {
+            return "Turnover"
+        } else if (acetateInt === 0) {
+            return "Downtime"
+        } else if (acetateInt === 1) {
+            return "Butyl"
+        } else {
+            return "Ethyl"
+        }
+    }
+
+    parseSched(schedule) {
+        let lastAcetate = schedule[0]
+        let count = 1
+        let acetateList = []
+        let countList = []
+        for (let i = 1; i < schedule.length; i++) {
+            const acetateInt = schedule[i]
+            if (acetateInt === lastAcetate) {
+                count++
+            } else {
+                let acetate = this.getAcetateFromInt(acetateInt)
+                acetateList.push(acetate)
+                countList.push(count)
+                lastAcetate = acetateInt
+                count = 1
+            }
+        }
+        console.log("FINAL ACETATE: ", acetateList)
+        console.log("FINAL COUNT: ", countList)
+    }
     async handleSubmit(event) {
         event.preventDefault()
         alert("submitted")
@@ -32,7 +64,7 @@ export default class Form extends Component {
         console.log(response)
         let schedule = response.data.schedule
         console.log(schedule)
-        
+        this.parseSched(schedule)
     }
 
     handleChange = (evt) => {
@@ -53,13 +85,13 @@ export default class Form extends Component {
                     <div className="form-group col-md-8 col-md-offset-2">
                         <label className='form-label'> Tank Initial Capacity (gallons)</label>
                         <br/>
-                        <input name="tankInitial" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
+                        <input name="tankInitial" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 0' min='0'></input>
                     </div>
                     {/* TANK CAPACITY */}
                     <div className="form-group col-md-8 col-md-offset-2">
                         <label className='form-label'> Tank Capacity (gallons)</label>
                         <br/>
-                        <input name="tankCapacity" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
+                        <input name="tankCapacity" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 1000000000' min='0'></input>
                     </div>
 
                     {/* Turnover */}
@@ -78,25 +110,25 @@ export default class Form extends Component {
                     <div className="form-group col-md-8 col-md-offset-2">
                         <label className='form-label'> Expected Demand (pounds per month)</label>
                         <br/>
-                        <input name="butylDemand" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
+                        <input name="butylDemand" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 52000' min='0'></input>
                     </div>
                     {/* BUTYL CAPACITY */}
                     <div>
                         <label className='form-label'>Production Capacity (pounds per month)</label>
                         <br/>
-                        <input name="butylCapacity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="butylCapacity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 104000'></input> 
                     </div>
                     {/* BUTYL Density */}
                     <div>
                         <label className='form-label'>Density(pounds per gallon)</label>
                         <br/>
-                        <input name="butylDensity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="butylDensity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 7.4'></input> 
                     </div>
                     {/* BUTYL Production rate */}
                     <div>
                         <label className='form-label'>Production rate(pounds per day)</label>
                         <br/>
-                        <input name="butylProd" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="butylProd" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 3500'></input> 
                     </div>
                 </div>
 
@@ -109,25 +141,25 @@ export default class Form extends Component {
                     <div className="form-group col-md-8 col-md-offset-2">
                         <label className='form-label'> Expected Demand (pounds per month)</label>
                         <br/>
-                        <input name="ethylDemand" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 100' min='0'></input>
+                        <input name="ethylDemand" type="number" step="0.01" onChange={this.handleChange} className="form-input"placeholder='e.g. 52000' min='0'></input>
                     </div>
                     {/* ETHYL CAPACITY */}
                      <div>
                         <label className='form-label'> Production Capacity (pounds per month)</label>
                         <br/>
-                        <input name="ethylCapacity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="ethylCapacity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 104000'></input> 
                     </div>
                     {/* ETHYL Density */}
                     <div>
                         <label className='form-label'> Density(pounds per gallon)</label>
                         <br/>
-                        <input name="ethylDensity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="ethylDensity" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 7.5'></input> 
                     </div>
                     {/* ETHYL Production rate */}
                     <div>
                         <label className='form-label'>Production rate(pounds per day)</label>
                         <br/>
-                        <input name="ethylProd" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 100'></input> 
+                        <input name="ethylProd" type="number" step="0.01" onChange={this.handleChange} classname="form-input" placeholder='e.g. 3500'></input> 
                     </div>
                 </div>
                 

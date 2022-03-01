@@ -57,7 +57,7 @@ class FormHandler(Resource):
     # ret_status, ret_msg = ReturnData(request_type, request_json)
     # currently just returning the req straight
 
-    schedObj : Schedule = fp.randomlyAssignSchedule(2)
+    schedObj : Schedule = fp.randomlyAssignSchedule(5)
     print(schedObj.getSchedule())
     print("total production: ", schedObj.getTotalProduction())
     
@@ -70,5 +70,5 @@ class FormHandler(Resource):
     else:
       message = "No Msg"
     
-    final_ret = {"status": "Success", "message": message, "schedule": schedObj.getSchedule()}
+    final_ret = {"status": "Success", "message": message, "schedule": schedObj.getSchedule(), "totalProduction": schedObj.getTotalProduction()}
     return final_ret
