@@ -71,3 +71,19 @@ label {
   margin: 0 0 5px 0;
   padding: 0;
 }
+
+/* Schedule CSS */
+.sched-main {
+  background: var(--primary-color);
+  padding: .1rem 0.625rem 0.625rem 0.625rem;
+  text-align: center;
+  margin: .625rem 0rem;
+  border-radius: 0.25rem;
+}
+
+.sched-title {
+
+}
+.sched-item {
+  font-size: larger;
+}

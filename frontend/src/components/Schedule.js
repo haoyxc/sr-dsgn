@@ -6,12 +6,13 @@ export default class Schedule extends Component {
     super(props)
   }
   render() {
-    return <div>
-      {this.props.acetateSchedule.length > 0 ? console.log(this.props.acetateSchedule) : null}
+    return (
+    <div className='sched-main'>
+      {this.props.acetateSchedule.length > 0 ? <h1 className='sched-title'>Schedule</h1>: null}
       {this.props.acetateSchedule.map((acetate, index) => {
         {console.log("hello")}
         return <ScheduleItem key={acetate + index} acetate={acetate} count={this.props.countSchedule[index]}/>
       })}
-    </div>;
+    </div>);
   }
 }

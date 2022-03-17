@@ -7,7 +7,7 @@ export default class ScheduleItem extends Component {
   render() {
     return (
       <div>
-          {this.props.acetate}: {this.props.count}
+         <p className='sched-item'> {this.props.acetate}: {this.props.count} days </p>
       </div>
     )
   }
